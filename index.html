@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Which Movie Next</title>
+    <style>
+      body {
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        color: white;
+        background-color: rgb(67, 12, 71);
+      }
+      #main {
+        text-align: center;
+        margin: auto;
+        width: 50%;
+      }
+      #content-name {
+        font-weight: bold;
+        font-size: large;
+        margin-bottom: 20px;
+      }
+      #content {
+        font-size: initial;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .poster {
+        margin: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    Which Movie Next Website
+    <div id="main">
+      <div>Total results: <span id="demo">-...</span></div>
+      <div id="content-name">
+        Most popular movies:
+
+        <div id="content"></div>
+      </div>
+    </div>
+    <script>
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NzkxOTgzMmE3NTVmNDQ2ZWNmOTQ3NDc4NDU1YjVkMiIsInN1YiI6IjY1NzBlNjUxOTU1YzY1MDEzYTk5MTQ3YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P6wHuzdp9NzoDNvZTSjYnKcUX3bb6MU9QxwDXcVYnI0",
+        },
+      };
+
+      fetch(
+        "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc",
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => {
+          console.log(response);
+          document.getElementById("demo").innerHTML = response.total_results;
+          response.results.forEach((result) => {
+            document.getElementById("content").innerHTML =
+              document.getElementById("content").innerHTML +
+              '<div class="poster">' +
+              "<div>" +
+              result.title +
+              "</div>" +
+              '<img src="https://image.tmdb.org/t/p/w200' +
+              result.poster_path +
+              '"' +
+              ' alt="">' +
+              "</div>";
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          document.getElementById("content").innerHTML = "ERROR";
+        });
+    </script>
+  </body>
+</html>
